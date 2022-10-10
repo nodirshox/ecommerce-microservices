@@ -3,9 +3,9 @@ spring:
     name: spring-data
 
   datasource:
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
+    url: jdbc:postgresql://${CATALOG_SERVICE_POSTGRES_HOST}:5432/${CATALOG_SERVICE_POSTGRES_DATABASE}
+    username: ${CATALOG_SERVICE_POSTGRES_USERNAME}
+    password: ${CATALOG_SERVICE_POSTGRES_PASSWORD}
 
   jpa:
     hibernate:
@@ -23,7 +23,7 @@ spring:
       mode: always
 
 server:
-  port: 8001
+  port: ${CATALOG_SERVICE_HTTP_PORT}
   error:
     include-message: always
     include-binding-errors: always
