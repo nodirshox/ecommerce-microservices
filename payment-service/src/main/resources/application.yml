@@ -3,9 +3,9 @@ spring:
     name: spring-data
 
   datasource:
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
+    url: jdbc:postgresql://${PAYMENT_SERVICE_POSTGRES_HOST}:5432/${PAYMENT_SERVICE_POSTGRES_DATABASE}
+    username: ${PAYMENT_SERVICE_POSTGRES_USERNAME}
+    password: ${PAYMENT_SERVICE_POSTGRES_PASSWORD}
 
   jpa:
     hibernate:
@@ -23,9 +23,7 @@ spring:
       mode: always
 
 server:
-  port: 8003
+  port: ${PAYMENT_SERVICE_HTTP_PORT}
   error:
     include-message: always
     include-binding-errors: always
-  servlet:
-    context-path: /api
