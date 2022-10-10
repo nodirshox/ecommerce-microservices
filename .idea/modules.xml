@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/auth-service/auth-service.iml" filepath="$PROJECT_DIR$/auth-service/auth-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/catalog-service/catalog-service.iml" filepath="$PROJECT_DIR$/catalog-service/catalog-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ecommerce-microservices.iml" filepath="$PROJECT_DIR$/.idea/ecommerce-microservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/order-service/order-service.iml" filepath="$PROJECT_DIR$/order-service/order-service.iml" />
     </modules>
   </component>
 </project>
