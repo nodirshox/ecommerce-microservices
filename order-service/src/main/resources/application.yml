@@ -29,4 +29,3 @@ server:
     include-binding-errors: always
   servlet:
     context-path: /api
-
