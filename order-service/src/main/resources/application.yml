@@ -23,7 +23,7 @@ spring:
       mode: always
 
 server:
-  port: 8001
+  port: 8002
   error:
     include-message: always
     include-binding-errors: always
