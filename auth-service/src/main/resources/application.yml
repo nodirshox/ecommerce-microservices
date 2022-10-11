@@ -3,7 +3,7 @@ spring:
     name: spring-data
 
   datasource:
-    url: jdbc:postgresql://${AUTH_SERVICE_POSTGRES_HOST}:5432/${AUTH_SERVICE_POSTGRES_DATABASE}
+    url: jdbc:postgresql://${AUTH_SERVICE_POSTGRES_HOST}:${AUTH_SERVICE_POSTGRES_PORT}/${AUTH_SERVICE_POSTGRES_DATABASE}
     username: ${AUTH_SERVICE_POSTGRES_USERNAME}
     password: ${AUTH_SERVICE_POSTGRES_PASSWORD}
 

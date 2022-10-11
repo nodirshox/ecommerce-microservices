@@ -3,7 +3,7 @@ spring:
     name: spring-data
 
   datasource:
-    url: jdbc:postgresql://${PAYMENT_SERVICE_POSTGRES_HOST}:5432/${PAYMENT_SERVICE_POSTGRES_DATABASE}
+    url: jdbc:postgresql://${PAYMENT_SERVICE_POSTGRES_HOST}:${PAYMENT_SERVICE_POSTGRES_PORT}/${PAYMENT_SERVICE_POSTGRES_DATABASE}
     username: ${PAYMENT_SERVICE_POSTGRES_USERNAME}
     password: ${PAYMENT_SERVICE_POSTGRES_PASSWORD}
 
@@ -23,7 +23,7 @@ spring:
       mode: always
 
 server:
-  port: ${PAYMENT_SERVICE_HTTP_PORT}
+  port: 8003
   error:
     include-message: always
     include-binding-errors: always
