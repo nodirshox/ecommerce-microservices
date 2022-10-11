@@ -1,20 +1,35 @@
 package com.ecommerce.catalog.service.service.impl;
 
 import com.ecommerce.catalog.service.dto.request.CreateProductRequestDTO;
+import com.ecommerce.catalog.service.dto.request.CreateStockDTO;
 import com.ecommerce.catalog.service.entity.Product;
 import com.ecommerce.catalog.service.model.Response;
 import com.ecommerce.catalog.service.repository.CatalogRepository;
 import com.ecommerce.catalog.service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+    @Value("${config.stock-service-host}")
+    private String STOCK_SERVICE_HOST;
+
+    @Value("${config.stock-service-port}")
+    private Integer STOCK_SERVICE_PORT;
+
+    private final String STOCK_SERVICE = getStockDetails();
 
     private final CatalogRepository catalogRepository;
+    private final RestTemplate restTemplate;
+
+    private String getStockDetails() {
+        return "http://"+ STOCK_SERVICE_HOST +":" + STOCK_SERVICE_PORT;
+    }
 
     @Override
     public Response getAllCategories() {
@@ -32,6 +47,12 @@ public class ProductServiceImpl implements ProductService {
     public Response saveProduct(CreateProductRequestDTO catalog) {
         Product product = new Product(catalog.getProductName(),catalog.getPrice(),catalog.getVendor(),catalog.getCategory());
         catalogRepository.save(product);
-        return new Response(product,true);
+        CreateStockDTO stockDTO = new CreateStockDTO(product.getId());
+        Response response = restTemplate.postForObject(STOCK_SERVICE + "/api/stocks", stockDTO, Response.class);
+        assert response != null;
+        if (response.getSuccess()) {
+            return new Response(product,true);
+        }
+        return new Response(false,"Error while saving product",null);
     }
 }
