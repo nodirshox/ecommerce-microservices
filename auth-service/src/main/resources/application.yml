@@ -23,7 +23,7 @@ spring:
       mode: always
 
 server:
-  port: ${AUTH_SERVICE_HTTP_PORT}
+  port: 8000
   error:
     include-message: always
     include-binding-errors: always

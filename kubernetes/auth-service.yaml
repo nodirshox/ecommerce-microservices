@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-auth
+  labels:
+    app: ecommerce-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-auth
+  template:
+    metadata:
+      labels:
+        app: ecommerce-auth
+    spec:
+      containers:
+        - name: ecommerce-auth
+          image: nodirshox/ecommerce-auth
+          ports:
+            - containerPort: 8000
+          env:
+            - name: AUTH_SERVICE_POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-db
+            - name: AUTH_SERVICE_POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: AUTH_SERVICE_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: AUTH_SERVICE_POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-auth-service
+spec:
+  selector:
+    app: ecommerce-auth
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 30000
