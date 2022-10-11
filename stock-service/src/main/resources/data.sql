@@ -1,0 +1,1 @@
+INSERT INTO stock (id, product_id, quantity, created_at) VALUES (1001, 1001, 100, current_timestamp);

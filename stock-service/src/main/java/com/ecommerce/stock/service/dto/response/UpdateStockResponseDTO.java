@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateStockResponseDTO {
     private Long productId;
-    private Long quantity;
+    private Integer quantity;
 }
