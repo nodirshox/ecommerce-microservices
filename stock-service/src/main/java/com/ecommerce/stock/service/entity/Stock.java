@@ -17,5 +17,5 @@ public class Stock {
 
     private Long productId;
     private Integer quantity;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 }
