@@ -4,6 +4,7 @@ import com.ecommerce.stock.service.dto.request.CreateStockRequestDTO;
 import com.ecommerce.stock.service.dto.request.UpdateStockRequestDTO;
 import com.ecommerce.stock.service.dto.response.CreateStockResponseDTO;
 import com.ecommerce.stock.service.dto.response.GetStockResponseDTO;
+import com.ecommerce.stock.service.dto.response.Response;
 import com.ecommerce.stock.service.dto.response.UpdateStockResponseDTO;
 import com.ecommerce.stock.service.entity.Stock;
 import com.ecommerce.stock.service.repository.StockRepository;
@@ -11,9 +12,7 @@ import com.ecommerce.stock.service.service.StockService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.transaction.Transactional;
@@ -28,44 +27,35 @@ public class StockServiceImpl implements StockService {
     private Integer MINIMUM_STOCK_ALERT;
     private final ModelMapper mapper;
     @Override
-    public CreateStockResponseDTO create(CreateStockRequestDTO createStockRequestDTO) {
+    public Response create(CreateStockRequestDTO createStockRequestDTO) {
         Stock isProductExists = stockRepository.getStockByProductId(createStockRequestDTO.getProductId());
 
         if (isProductExists != null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Stock with productId="
-                            + createStockRequestDTO.getProductId()
-                            + " is already exists");
+            log.info("Stock with productId=" + createStockRequestDTO.getProductId() + " is already exists");
+            return new Response(null, false);
         }
 
         Stock stock = mapper.map(createStockRequestDTO, Stock.class);
         stock.setQuantity(0);
         stock.setCreatedAt(LocalDateTime.now());
-        return mapper.map(stockRepository.save(stock), CreateStockResponseDTO.class);
+        return new Response(mapper.map(stockRepository.save(stock), CreateStockResponseDTO.class), true);
     }
 
     @Override
     @Transactional
-    public UpdateStockResponseDTO update(UpdateStockRequestDTO updateStockRequestDTO) {
+    public Response update(UpdateStockRequestDTO updateStockRequestDTO) {
         Stock stock = stockRepository.getStockByProductId(updateStockRequestDTO.getProductId());
 
         if (stock == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Stock with productId="
-                            + updateStockRequestDTO.getProductId()
-                            + " not found");
+            log.info("Stock with productId=" + updateStockRequestDTO.getProductId() + " not found");
+            return new Response(null, false);
         }
 
         int targetQuantity = stock.getQuantity() + updateStockRequestDTO.getQuantity();
 
         if (targetQuantity < 0) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Stock with productId="
-                            + stock.getProductId()
-                            + " not enough to update");
+            log.info("Stock with productId=" + stock.getProductId() + " not enough to update");
+            return new Response(null, false);
         }
 
         // TODO: If targetQuantity is smaller than MIN, send notification (50)
@@ -75,21 +65,18 @@ public class StockServiceImpl implements StockService {
 
         stock.setQuantity(targetQuantity);
 
-        return mapper.map(stock, UpdateStockResponseDTO.class);
+        return new Response(mapper.map(stock, UpdateStockResponseDTO.class), true);
     }
 
     @Override
-    public GetStockResponseDTO get(Long productId) {
+    public Response get(Long productId) {
         Stock stock = stockRepository.getStockByProductId(productId);
 
         if (stock == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Stock with productId="
-                            + productId
-                            + " not found");
+            log.info("Stock with productId=" + productId + " not found");
+            return new Response(null, false);
         }
 
-        return mapper.map(stock, GetStockResponseDTO.class);
+        return new Response(mapper.map(stock, GetStockResponseDTO.class), true);
     }
 }
