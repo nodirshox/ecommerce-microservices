@@ -27,3 +27,7 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+
+config:
+  stock-service-host: ${STOCK_SERVICE_HOST}
+  stock-service-port: ${STOCK_SERVICE_PORT}
