@@ -22,14 +22,8 @@ public class ProductServiceImpl implements ProductService {
     @Value("${config.stock-service-port}")
     private Integer STOCK_SERVICE_PORT;
 
-    private final String STOCK_SERVICE = getStockDetails();
-
     private final CatalogRepository catalogRepository;
     private final RestTemplate restTemplate;
-
-    private String getStockDetails() {
-        return "http://"+ STOCK_SERVICE_HOST +":" + STOCK_SERVICE_PORT;
-    }
 
     @Override
     public Response getAllCategories() {
@@ -45,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Response saveProduct(CreateProductRequestDTO catalog) {
+        String STOCK_SERVICE = "http://"+ STOCK_SERVICE_HOST +":" + STOCK_SERVICE_PORT;
         Product product = new Product(catalog.getProductName(),catalog.getPrice(),catalog.getVendor(),catalog.getCategory());
         catalogRepository.save(product);
         CreateStockDTO stockDTO = new CreateStockDTO(product.getId());
