@@ -14,6 +14,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long orderId;
+    private Double amount;
     private PaymentMethod paymentMethod;
 
     public static enum PaymentMethod {
