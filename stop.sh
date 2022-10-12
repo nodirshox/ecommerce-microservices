@@ -34,6 +34,8 @@ minikube kubectl -- delete -f kubernetes/services/order-service.yaml
 minikube kubectl -- delete -f kubernetes/services/payment-service.yaml
 minikube kubectl -- delete -f kubernetes/services/shipping-service.yaml
 minikube kubectl -- delete -f kubernetes/services/stock-service.yaml
+minikube kubectl -- delete -f kubernetes/services/card-service.yaml
+minikube kubectl -- delete -f kubernetes/services/bank-service.yaml
 
 printLine
 echo "| You are free now. Go to make Barbeque and enjoy the rest of day..."
