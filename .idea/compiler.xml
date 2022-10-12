@@ -11,8 +11,8 @@
         <module name="payment-service" />
         <module name="catalog-service" />
         <module name="order-service" />
-        <module name="bank-service" />
         <module name="credit-card-service" />
+        <module name="bank-service" />
         <module name="shipping-service" />
       </profile>
     </annotationProcessing>

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-bank
+  labels:
+    app: ecommerce-bank
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-bank
+  template:
+    metadata:
+      labels:
+        app: ecommerce-bank
+    spec:
+      containers:
+        - name: ecommerce-bank
+          image: nodirshox/ecommerce-bank
+          ports:
+            - containerPort: 8007
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-bank-service
+spec:
+  selector:
+    app: ecommerce-bank
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8007
+      targetPort: 8007
+      nodePort: 30007

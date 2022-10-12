@@ -39,6 +39,8 @@ minikube kubectl -- apply -f kubernetes/services/order-service.yaml
 minikube kubectl -- apply -f kubernetes/services/payment-service.yaml
 minikube kubectl -- apply -f kubernetes/services/shipping-service.yaml
 minikube kubectl -- apply -f kubernetes/services/stock-service.yaml
+minikube kubectl -- apply -f kubernetes/services/card-service.yaml
+minikube kubectl -- apply -f kubernetes/services/bank-service.yaml
 
 printLine
 echo "| 6. Starting Services"
@@ -49,6 +51,8 @@ minikube service ecommerce-order-service --url
 minikube service ecommerce-payment-service --url
 minikube service ecommerce-shipping-service --url
 minikube service ecommerce-stock-service --url
+minikube service ecommerce-card-service --url
+minikube service ecommerce-bank-service --url
 
 printLine
 echo "| Wait 20-30 seconds, until IP is assigned. Now you can check..."
