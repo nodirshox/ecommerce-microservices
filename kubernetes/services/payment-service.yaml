@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-postgres-deployment
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-postgres
+  template:
+    metadata:
+      labels:
+        app: payment-postgres
+    spec:
+      containers:
+        - name: payment-postgres
+          image: postgres:14
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: payment-postgres-db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-postgres-service
+spec:
+  selector:
+    app: payment-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-payment
+  labels:
+    app: ecommerce-payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-payment
+  template:
+    metadata:
+      labels:
+        app: ecommerce-payment
+    spec:
+      containers:
+        - name: ecommerce-payment
+          image: nodirshox/ecommerce-payment
+          ports:
+            - containerPort: 8003
+          env:
+            - name: PAYMENT_SERVICE_POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: payment-postgres-db
+            - name: PAYMENT_SERVICE_POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: PAYMENT_SERVICE_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: PAYMENT_SERVICE_POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: payment_database_url
+            - name: PAYMENT_SERVICE_POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-payment-service
+spec:
+  selector:
+    app: ecommerce-payment
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8003
+      targetPort: 8003
+      nodePort: 30003

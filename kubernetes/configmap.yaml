@@ -5,5 +5,9 @@ metadata:
 data:
   auth_database_url: auth-postgres-service
   catalog_database_url: catalog-postgres-service
+  order_database_url: order-postgres-service
+  payment_database_url: payment-postgres-service
+  shipping_database_url: shipping-postgres-service
   stock_database_url: stock-postgres-service
+
   stock_service_host: ecommerce-stock-service
