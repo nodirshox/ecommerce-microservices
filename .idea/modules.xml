@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/auth-service/auth-service.iml" filepath="$PROJECT_DIR$/auth-service/auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bank-service/bank-service.iml" filepath="$PROJECT_DIR$/bank-service/bank-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/catalog-service/catalog-service.iml" filepath="$PROJECT_DIR$/catalog-service/catalog-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/credit-card-service/credit-card-service.iml" filepath="$PROJECT_DIR$/credit-card-service/credit-card-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ecommerce-microservices.iml" filepath="$PROJECT_DIR$/.idea/ecommerce-microservices.iml" />
       <module fileurl="file://$PROJECT_DIR$/order-service/order-service.iml" filepath="$PROJECT_DIR$/order-service/order-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-service.iml" filepath="$PROJECT_DIR$/payment-service/payment-service.iml" />
