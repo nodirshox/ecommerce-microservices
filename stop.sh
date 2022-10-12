@@ -30,6 +30,9 @@ echo "| 4. Stopping services"
 printLine
 minikube kubectl -- delete -f kubernetes/services/auth-service.yaml
 minikube kubectl -- delete -f kubernetes/services/catalog-service.yaml
+minikube kubectl -- delete -f kubernetes/services/order-service.yaml
+minikube kubectl -- delete -f kubernetes/services/payment-service.yaml
+minikube kubectl -- delete -f kubernetes/services/shipping-service.yaml
 minikube kubectl -- delete -f kubernetes/services/stock-service.yaml
 
 printLine

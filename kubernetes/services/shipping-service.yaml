@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping-postgres-deployment
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shipping-postgres
+  template:
+    metadata:
+      labels:
+        app: shipping-postgres
+    spec:
+      containers:
+        - name: shipping-postgres
+          image: postgres:14
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: shipping-postgres-db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping-postgres-service
+spec:
+  selector:
+    app: shipping-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-shipping
+  labels:
+    app: ecommerce-shipping
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-shipping
+  template:
+    metadata:
+      labels:
+        app: ecommerce-shipping
+    spec:
+      containers:
+        - name: ecommerce-shipping
+          image: nodirshox/ecommerce-shipping
+          ports:
+            - containerPort: 8004
+          env:
+            - name: SHIPPING_SERVICE_POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: shipping-postgres-db
+            - name: SHIPPING_SERVICE_POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: SHIPPING_SERVICE_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: SHIPPING_SERVICE_POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: shipping_database_url
+            - name: SHIPPING_SERVICE_POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-shipping-service
+spec:
+  selector:
+    app: ecommerce-shipping
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8004
+      targetPort: 8004
+      nodePort: 30004

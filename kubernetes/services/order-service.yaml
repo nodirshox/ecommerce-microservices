@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-postgres-deployment
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-postgres
+  template:
+    metadata:
+      labels:
+        app: order-postgres
+    spec:
+      containers:
+        - name: order-postgres
+          image: postgres:14
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: order-postgres-db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-postgres-service
+spec:
+  selector:
+    app: order-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-order
+  labels:
+    app: ecommerce-order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-order
+  template:
+    metadata:
+      labels:
+        app: ecommerce-order
+    spec:
+      containers:
+        - name: ecommerce-order
+          image: nodirshox/ecommerce-order
+          ports:
+            - containerPort: 8002
+          env:
+            - name: ORDER_SERVICE_POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: order-postgres-db
+            - name: ORDER_SERVICE_POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: ORDER_SERVICE_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: ORDER_SERVICE_POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: order_database_url
+            - name: ORDER_SERVICE_POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-order-service
+spec:
+  selector:
+    app: ecommerce-order
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8002
+      targetPort: 8002
+      nodePort: 30002
