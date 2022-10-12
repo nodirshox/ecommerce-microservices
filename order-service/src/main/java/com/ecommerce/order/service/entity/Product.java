@@ -15,7 +15,7 @@ public class Product {
     private Long productId;
     private Integer quantity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonBackReference
     private Order order;
 }

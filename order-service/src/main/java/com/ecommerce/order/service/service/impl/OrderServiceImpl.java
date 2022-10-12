@@ -2,6 +2,7 @@ package com.ecommerce.order.service.service.impl;
 
 import com.ecommerce.order.service.dto.OrderCreateDTO;
 import com.ecommerce.order.service.entity.Order;
+import com.ecommerce.order.service.entity.Product;
 import com.ecommerce.order.service.model.Response;
 import com.ecommerce.order.service.repository.OrderRepository;
 import com.ecommerce.order.service.service.OrderService;
@@ -25,6 +26,10 @@ public class OrderServiceImpl implements OrderService {
         order.setUserId(orderCreateDTO.getUserId());
         order.setPaymentMethod(orderCreateDTO.getPaymentMethod());
         order.setProducts(orderCreateDTO.getProducts());
+        order.getProducts().forEach((el) -> {
+            el.setOrder(order);
+        });
+
         order.setAddress(orderCreateDTO.getAddress());
         orderRepository.save(order);
         return new Response(order,true);
