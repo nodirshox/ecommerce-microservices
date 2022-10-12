@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalog-postgres-deployment
+  name: stock-postgres-deployment
   labels:
     app: postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: catalog-postgres
+      app: stock-postgres
   template:
     metadata:
       labels:
-        app: catalog-postgres
+        app: stock-postgres
     spec:
       containers:
-        - name: catalog-postgres
+        - name: stock-postgres
           image: postgres:14
           ports:
             - containerPort: 5432
@@ -24,7 +24,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: catalog-postgres-db
+                  key: stock-postgres-db
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -39,10 +39,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: catalog-postgres-service
+  name: stock-postgres-service
 spec:
   selector:
-    app: catalog-postgres
+    app: stock-postgres
   ports:
     - protocol: TCP
       port: 5432
@@ -51,68 +51,66 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ecommerce-catalog
+  name: ecommerce-stock
   labels:
-    app: ecommerce-catalog
+    app: ecommerce-stock
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ecommerce-catalog
+      app: ecommerce-stock
   template:
     metadata:
       labels:
-        app: ecommerce-catalog
+        app: ecommerce-stock
     spec:
       containers:
-        - name: ecommerce-catalog
-          image: nodirshox/ecommerce-catalog
+        - name: ecommerce-stock
+          image: nodirshox/ecommerce-stock
           ports:
-            - containerPort: 8001
+            - containerPort: 8005
           env:
-            - name: CATALOG_SERVICE_POSTGRES_DATABASE
+            - name: STOCK_SERVICE_POSTGRES_DATABASE
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: catalog-postgres-db
-            - name: CATALOG_SERVICE_POSTGRES_USERNAME
+                  key: stock-postgres-db
+            - name: STOCK_SERVICE_POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
                   key: postgres-user
-            - name: CATALOG_SERVICE_POSTGRES_PASSWORD
+            - name: STOCK_SERVICE_POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
                   key: postgres-password
-            - name: CATALOG_SERVICE_POSTGRES_HOST
+            - name: STOCK_SERVICE_POSTGRES_HOST
               valueFrom:
                 configMapKeyRef:
                   name: postgres-configmap
-                  key: catalog_database_url
-            - name: CATALOG_SERVICE_POSTGRES_PORT
+                  key: stock_database_url
+            - name: STOCK_SERVICE_POSTGRES_PORT
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
                   key: postgres-port
-            - name: STOCK_SERVICE_HOST
+            - name: STOCK_SERVICE_MIN_STOCK_ALERT
               valueFrom:
-                configMapKeyRef:
-                  name: postgres-configmap
-                  key: stock_service_host
-            - name: STOCK_SERVICE_PORT
-              value: "8005"
+               secretKeyRef:
+                 name: postgres-secret
+                 key: min-stock-alert
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ecommerce-catalog-service
+  name: ecommerce-stock-service
 spec:
   selector:
-    app: ecommerce-catalog
+    app: ecommerce-stock
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 8001
-      targetPort: 8001
-      nodePort: 30001
+      port: 8005
+      targetPort: 8005
+      nodePort: 30005

@@ -27,17 +27,22 @@ minikube kubectl -- apply -f kubernetes/configmap.yaml
 
 printLine
 echo "| 4. Applying secret"
+printLine
 minikube kubectl -- apply -f kubernetes/postgres-secret.yaml
 
 printLine
 echo "| 5. Starting Microservices"
+printLine
 minikube kubectl -- apply -f kubernetes/services/auth-service.yaml
 minikube kubectl -- apply -f kubernetes/services/catalog-service.yaml
+minikube kubectl -- apply -f kubernetes/services/stock-service.yaml
 
 printLine
 echo "| 6. Starting Services"
+printLine
 minikube service ecommerce-auth-service --url
-minikube service ecommerce-auth-service --url
+minikube service ecommerce-catalog-service --url
+minikube service ecommerce-stock-service --url
 
 printLine
 echo "| Wait 20-30 seconds, until IP is assigned. Now you can check..."
