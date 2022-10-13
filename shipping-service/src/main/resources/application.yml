@@ -2,26 +2,6 @@ spring:
   application:
     name: spring-data
 
-  datasource:
-    url: jdbc:postgresql://${SHIPPING_SERVICE_POSTGRES_HOST}:${SHIPPING_SERVICE_POSTGRES_PORT}/${SHIPPING_SERVICE_POSTGRES_DATABASE}
-    username: ${SHIPPING_SERVICE_POSTGRES_USERNAME}
-    password: ${SHIPPING_SERVICE_POSTGRES_PASSWORD}
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
-    defer-datasource-initialization: true
-
-  sql:
-    init:
-      mode: always
-
 server:
   port: 8004
   error:

@@ -8,5 +8,5 @@ public interface OrderService {
 
     Response getUserOrders(Long id);
 
-    Response getOrder(Long id);
+    Response getOrder(Long id, String prop);
 }
