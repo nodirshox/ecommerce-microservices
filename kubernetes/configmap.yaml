@@ -10,3 +10,7 @@ data:
   stock_database_url: stock-postgres-service
 
   stock_service_host: ecommerce-stock-service
+  bank_service_host: ecommerce-bank-service
+  card_service_host: ecommerce-card-service
+  shipping_service_host: ecommerce-card-service
+  order_service_host: ecommerce-order-service

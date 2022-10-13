@@ -27,9 +27,7 @@ metadata:
 spec:
   selector:
     app: ecommerce-card
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8006
       targetPort: 8006
-      nodePort: 30006
