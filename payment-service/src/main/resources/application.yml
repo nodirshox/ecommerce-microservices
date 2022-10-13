@@ -33,3 +33,7 @@ config:
   bank-service-port: ${BANK_SERVICE_PORT}
   credit-card-service-host: ${CREDIT_CARD_SERVICE_HOST}
   credit-card-service-port: ${CREDIT_CARD_SERVICE_PORT}
+  shipment-service-host: ${SHIPMENT_SERVICE_HOST}
+  shipment-service-port: ${SHIPMENT_SERVICE_PORT}
+  order-service-host: ${ORDER_SERVICE_HOST}
+  order-service-port: ${ORDER_SERVICE_PORT}

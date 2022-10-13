@@ -24,7 +24,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public Response getOrder(@PathVariable Long id) {
-        return orderService.getOrder(id);
+    public Response getOrder(@PathVariable Long id, @RequestParam(required = false) String prop) {
+        return orderService.getOrder(id, prop);
     }
 }
