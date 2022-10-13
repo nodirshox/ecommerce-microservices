@@ -49,10 +49,6 @@ minikube service ecommerce-auth-service --url
 minikube service ecommerce-catalog-service --url
 minikube service ecommerce-order-service --url
 minikube service ecommerce-payment-service --url
-minikube service ecommerce-shipping-service --url
-minikube service ecommerce-stock-service --url
-minikube service ecommerce-card-service --url
-minikube service ecommerce-bank-service --url
 
 printLine
 echo "| Wait 20-30 seconds, until IP is assigned. Now you can check..."
