@@ -1,56 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stock-postgres-deployment
-  labels:
-    app: postgres
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: stock-postgres
-  template:
-    metadata:
-      labels:
-        app: stock-postgres
-    spec:
-      containers:
-        - name: stock-postgres
-          image: postgres:14.5-alpine3.16
-          ports:
-            - containerPort: 5432
-          env:
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: stock-postgres-db
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: postgres-user
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: postgres-password
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: stock-postgres-service
-spec:
-  selector:
-    app: stock-postgres
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: ecommerce-stock
   labels:
     app: ecommerce-stock
@@ -74,7 +24,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: stock-postgres-db
+                  key: postgres-db
             - name: STOCK_SERVICE_POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -89,7 +39,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: postgres-configmap
-                  key: stock_database_url
+                  key: database_url
             - name: STOCK_SERVICE_POSTGRES_PORT
               valueFrom:
                 secretKeyRef:
@@ -105,7 +55,9 @@ metadata:
 spec:
   selector:
     app: ecommerce-stock
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8005
       targetPort: 8005
+      nodePort: 30005

@@ -2,12 +2,9 @@ package com.ecommerce.auth.service.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+@Entity(name = "auth_service_role")
 @Data
 public class Role {
 

@@ -1,1 +1,1 @@
-INSERT INTO stock (id, product_id, quantity, created_at) VALUES (1001, 1001, 100, current_timestamp);
+INSERT INTO stock_service_stock (id, product_id, quantity, created_at) VALUES (1001, 1001, 100, current_timestamp);

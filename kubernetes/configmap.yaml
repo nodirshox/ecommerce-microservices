@@ -3,14 +3,10 @@ kind: ConfigMap
 metadata:
   name: postgres-configmap
 data:
-  auth_database_url: auth-postgres-service
-  catalog_database_url: catalog-postgres-service
-  order_database_url: order-postgres-service
-  payment_database_url: payment-postgres-service
-  stock_database_url: stock-postgres-service
+  database_url: postgres-service
 
   stock_service_host: ecommerce-stock-service
   bank_service_host: ecommerce-bank-service
   card_service_host: ecommerce-card-service
-  shipping_service_host: ecommerce-card-service
+  shipping_service_host: ecommerce-shipping-service
   order_service_host: ecommerce-order-service

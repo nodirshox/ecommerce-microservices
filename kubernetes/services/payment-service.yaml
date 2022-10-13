@@ -1,56 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: payment-postgres-deployment
-  labels:
-    app: postgres
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: payment-postgres
-  template:
-    metadata:
-      labels:
-        app: payment-postgres
-    spec:
-      containers:
-        - name: payment-postgres
-          image: postgres:14.5-alpine3.16
-          ports:
-            - containerPort: 5432
-          env:
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: payment-postgres-db
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: postgres-user
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: postgres-password
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: payment-postgres-service
-spec:
-  selector:
-    app: payment-postgres
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: ecommerce-payment
   labels:
     app: ecommerce-payment
@@ -74,7 +24,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: payment-postgres-db
+                  key: postgres-db
             - name: PAYMENT_SERVICE_POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -89,7 +39,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: postgres-configmap
-                  key: payment_database_url
+                  key: database_url
             - name: PAYMENT_SERVICE_POSTGRES_PORT
               valueFrom:
                 secretKeyRef:

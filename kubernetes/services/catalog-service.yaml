@@ -1,56 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalog-postgres-deployment
-  labels:
-    app: postgres
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: catalog-postgres
-  template:
-    metadata:
-      labels:
-        app: catalog-postgres
-    spec:
-      containers:
-        - name: catalog-postgres
-          image: postgres:14.5-alpine3.16
-          ports:
-            - containerPort: 5432
-          env:
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: catalog-postgres-db
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: postgres-user
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: postgres-password
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: catalog-postgres-service
-spec:
-  selector:
-    app: catalog-postgres
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: ecommerce-catalog
   labels:
     app: ecommerce-catalog
@@ -74,7 +24,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: catalog-postgres-db
+                  key: postgres-db
             - name: CATALOG_SERVICE_POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -89,7 +39,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: postgres-configmap
-                  key: catalog_database_url
+                  key: database_url
             - name: CATALOG_SERVICE_POSTGRES_PORT
               valueFrom:
                 secretKeyRef:

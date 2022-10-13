@@ -27,7 +27,9 @@ metadata:
 spec:
   selector:
     app: ecommerce-bank
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8007
       targetPort: 8007
+      nodePort: 30007
