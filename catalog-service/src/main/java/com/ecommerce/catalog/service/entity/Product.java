@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Entity
+@Entity(name = "catalog_service_product")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

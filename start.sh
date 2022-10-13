@@ -18,7 +18,7 @@ minikube version
 printLine
 echo "| 2. Starting Minikube"
 printLine
-minikube start
+minikube start --cpus 4 --memory 6144
 
 printLine
 echo "| 3. Applying config"
@@ -33,6 +33,7 @@ minikube kubectl -- apply -f kubernetes/postgres-secret.yaml
 printLine
 echo "| 5. Starting Microservices"
 printLine
+minikube kubectl -- apply -f kubernetes/services/postgres-service.yaml
 minikube kubectl -- apply -f kubernetes/services/auth-service.yaml
 minikube kubectl -- apply -f kubernetes/services/catalog-service.yaml
 minikube kubectl -- apply -f kubernetes/services/order-service.yaml
@@ -45,10 +46,10 @@ minikube kubectl -- apply -f kubernetes/services/bank-service.yaml
 printLine
 echo "| 6. Starting Services"
 printLine
-minikube service ecommerce-auth-service --url
-minikube service ecommerce-catalog-service --url
-minikube service ecommerce-order-service --url
-minikube service ecommerce-payment-service --url
+#minikube service ecommerce-auth-service --url
+#minikube service ecommerce-catalog-service --url
+#minikube service ecommerce-order-service --url
+#minikube service ecommerce-payment-service --url
 
 printLine
 echo "| Wait 20-30 seconds, until IP is assigned. Now you can check..."

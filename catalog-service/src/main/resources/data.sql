@@ -1,0 +1,2 @@
+INSERT INTO catalog_service_product (id, category, price, product_name, vendor) VALUES (1001, 'Laptops', 999, 'Macbook Pro 14', 'Apple');
+INSERT INTO catalog_service_product (id, category, price, product_name, vendor) VALUES (1002, 'Laptops', 1099, 'Macbook Air M1', 'Apple');

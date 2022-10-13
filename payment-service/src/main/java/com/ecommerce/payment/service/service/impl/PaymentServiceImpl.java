@@ -8,16 +8,20 @@ import com.ecommerce.payment.service.model.Response;
 import com.ecommerce.payment.service.repository.PaymentRepository;
 import com.ecommerce.payment.service.service.PaymentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentServiceImpl implements PaymentService {
 
     @Value("${config.bank-service-host}")
@@ -60,20 +64,34 @@ public class PaymentServiceImpl implements PaymentService {
         Response response = new Response();
         AmountRequestDTO amountRequestDTO = new AmountRequestDTO(payment.getAmount());
 
-        if (payment.getPaymentMethod() == Payment.PaymentMethod.BANK) {
-            response = restTemplate.postForObject(BANK_SERVICE + "/api/bank/payments",amountRequestDTO,Response.class);
-        } else if (payment.getPaymentMethod() == Payment.PaymentMethod.CC) {
-            response = restTemplate.postForObject(CREDIT_CARD_SERVICE + "/api/credit-card/payments",amountRequestDTO,Response.class);
+        // Checking the order
+        log.info("Sending order service method");
+        Response addressResponse = restTemplate.getForObject(ORDER_SERVICE + "/api/orders/"+ paymentDTO.getOrderId() +"?prop=address",Response.class);
+        log.info("Received response from order service method", addressResponse);
+
+        if (!addressResponse.getSuccess()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order with id=" + paymentDTO.getOrderId() + " not found");
         }
 
-        Response addressResponse = restTemplate.getForObject(ORDER_SERVICE + "/api/orders/1?prop=address",Response.class);
         assert addressResponse != null;
         Address address = new Address();
         mapper.map(addressResponse.getData(),address);
 
+        log.info("Sending payment method");
+        if (payment.getPaymentMethod() == Payment.PaymentMethod.BANK) {
+            log.info("Sending payment method to bank service");
+            response = restTemplate.postForObject(BANK_SERVICE + "/api/bank/payments",amountRequestDTO,Response.class);
+            log.info("Received response from bank service", response);
 
+        } else if (payment.getPaymentMethod() == Payment.PaymentMethod.CC) {
+            log.info("Sending payment method to credit card service");
+            response = restTemplate.postForObject(CREDIT_CARD_SERVICE + "/api/credit-card/payments",amountRequestDTO,Response.class);
+            log.info("Received response from credit card service", response);
+        }
+
+        log.info("Sending shipping service method");
         Response shipmentResponse = restTemplate.postForObject(SHIPMENT_SERVICE + "/api/shipment", address,Response.class);
-
+        log.info("Received response from shipping service method");
 
         assert response != null;
         if (response.getSuccess()) {

@@ -46,6 +46,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Response getOrder(Long id, String prop) {
         Order order = orderRepository.findById(id).orElse(null);
+
+        if (order == null) {
+            return new Response(false, "Order with id=" + id + " not found", null);
+        }
+
         if (prop == null) {
             return new Response(order, true);
         }

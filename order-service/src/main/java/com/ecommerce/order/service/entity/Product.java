@@ -5,8 +5,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+@Entity(name = "order_service_product")
 @Data
-@Entity
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

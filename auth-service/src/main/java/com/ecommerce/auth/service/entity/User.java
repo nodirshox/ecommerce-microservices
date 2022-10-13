@@ -6,8 +6,7 @@ import lombok.Value;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "users")
+@Entity(name = "auth_service_users")
 @Data
 public class User {
 
