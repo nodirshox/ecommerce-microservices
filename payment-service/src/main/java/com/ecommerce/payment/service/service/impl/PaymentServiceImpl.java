@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -73,7 +70,13 @@ public class PaymentServiceImpl implements PaymentService {
 
         // Checking the order
         log.info("Sending order service method");
-        Response addressResponse = restTemplate.getForObject(ORDER_SERVICE + "/api/orders/"+ paymentDTO.getOrderId() +"?prop=address",Response.class);
+        HttpEntity<Void> orderEntity = new HttpEntity<>(getHeader());
+        Response addressResponse = restTemplate.exchange(
+                ORDER_SERVICE + "/api/orders/"+ paymentDTO.getOrderId() +"?prop=address",
+                HttpMethod.GET,
+                orderEntity,
+                Response.class
+        ).getBody();
         log.info("Received response from order service method", addressResponse);
 
         if (!addressResponse.getSuccess()) {
