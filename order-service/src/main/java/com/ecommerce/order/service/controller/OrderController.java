@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("api/orders")
+@RequestMapping("/order/orders")
 @RequiredArgsConstructor
 @Slf4j
 public class OrderController {
@@ -27,7 +27,7 @@ public class OrderController {
         return orderService.placeOrder(orderCreateDTO);
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/user/{id}")
     public Response getUserOrders(@PathVariable Long id) {
         return orderService.getUserOrders(id);
     }

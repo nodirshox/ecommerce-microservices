@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.set("key",SECRET_KEY);
         HttpEntity<CreateStockDTO> httpEntity = new HttpEntity<>(stockDTO,headers);
-        Response response = restTemplate.postForObject(STOCK_SERVICE + "/api/stocks", httpEntity, Response.class);
+        Response response = restTemplate.postForObject(STOCK_SERVICE + "/stock/stocks", httpEntity, Response.class);
         assert response != null;
         if (response.getSuccess()) {
             return new Response(product,true);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("api/credit-card/payments")
+@RequestMapping("/card/credit-card/payments")
 @Slf4j
 @RequiredArgsConstructor
 public class CreditCardController {

@@ -72,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService {
         log.info("Sending order service method");
         HttpEntity<Void> orderEntity = new HttpEntity<>(getHeader());
         Response addressResponse = restTemplate.exchange(
-                ORDER_SERVICE + "/api/orders/"+ paymentDTO.getOrderId() +"?prop=address",
+                ORDER_SERVICE + "/order/orders/"+ paymentDTO.getOrderId() +"?prop=address",
                 HttpMethod.GET,
                 orderEntity,
                 Response.class
@@ -91,18 +91,18 @@ public class PaymentServiceImpl implements PaymentService {
         HttpEntity<AmountRequestDTO> httpEntity = new HttpEntity<>(amountRequestDTO,getHeader());
         if (payment.getPaymentMethod() == Payment.PaymentMethod.BANK) {
             log.info("Sending payment method to bank service");
-            response = restTemplate.postForObject(BANK_SERVICE + "/api/bank/payments",httpEntity,Response.class);
+            response = restTemplate.postForObject(BANK_SERVICE + "/bank/payments",httpEntity,Response.class);
             log.info("Received response from bank service", response);
 
         } else if (payment.getPaymentMethod() == Payment.PaymentMethod.CC) {
             log.info("Sending payment method to credit card service");
-            response = restTemplate.postForObject(CREDIT_CARD_SERVICE + "/api/credit-card/payments",httpEntity,Response.class);
+            response = restTemplate.postForObject(CREDIT_CARD_SERVICE + "/card/credit-card/payments",httpEntity,Response.class);
             log.info("Received response from credit card service", response);
         }
 
         log.info("Sending shipping service method");
         HttpEntity<Address> addressHttpEntity = new HttpEntity<>(address,getHeader());
-        Response shipmentResponse = restTemplate.postForObject(SHIPMENT_SERVICE + "/api/shipment", addressHttpEntity,Response.class);
+        Response shipmentResponse = restTemplate.postForObject(SHIPMENT_SERVICE + "/shipping/shipment", addressHttpEntity,Response.class);
         log.info("Received response from shipping service method");
 
         assert response != null;
