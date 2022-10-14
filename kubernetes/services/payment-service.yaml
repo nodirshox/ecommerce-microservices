@@ -73,6 +73,11 @@ spec:
                   key: order_service_host
             - name: ORDER_SERVICE_PORT
               value: "8002"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: header-secret
 ---
 apiVersion: v1
 kind: Service
@@ -81,9 +86,7 @@ metadata:
 spec:
   selector:
     app: ecommerce-payment
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8003
       targetPort: 8003
-      nodePort: 30003

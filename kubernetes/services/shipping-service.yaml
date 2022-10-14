@@ -19,6 +19,12 @@ spec:
           image: nodirshox/ecommerce-shipping
           ports:
             - containerPort: 8004
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: header-secret
 ---
 apiVersion: v1
 kind: Service
@@ -27,9 +33,7 @@ metadata:
 spec:
   selector:
     app: ecommerce-shipping
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8004
       targetPort: 8004
-      nodePort: 30004

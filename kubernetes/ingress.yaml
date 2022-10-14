@@ -13,3 +13,52 @@ spec:
                 name: ecommerce-auth-service
                 port:
                   number: 8000
+          - path: /catalog
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-catalog-service
+                port:
+                  number: 8001
+          - path: /order
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-order-service
+                port:
+                  number: 8002
+          - path: /payment
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-payment-service
+                port:
+                  number: 8003
+          - path: /shipping
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-shipping-service
+                port:
+                  number: 8004
+          - path: /stock
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-stock-service
+                port:
+                  number: 8005
+          - path: /card
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-card-service
+                port:
+                  number: 8006
+          - path: /bank
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-bank-service
+                port:
+                  number: 8007

@@ -45,6 +45,11 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: postgres-port
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: header-secret
 ---
 apiVersion: v1
 kind: Service
@@ -53,9 +58,7 @@ metadata:
 spec:
   selector:
     app: ecommerce-order
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8002
       targetPort: 8002
-      nodePort: 30002

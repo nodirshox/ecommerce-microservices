@@ -47,6 +47,11 @@ spec:
                   key: postgres-port
             - name: STOCK_SERVICE_MIN_STOCK_ALERT
               value: "50"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: header-secret
 ---
 apiVersion: v1
 kind: Service
@@ -55,9 +60,7 @@ metadata:
 spec:
   selector:
     app: ecommerce-stock
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8005
       targetPort: 8005
-      nodePort: 30005

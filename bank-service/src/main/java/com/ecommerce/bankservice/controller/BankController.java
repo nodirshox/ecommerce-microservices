@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("api/bank/payments")
+@RequestMapping("/bank/payments")
 @RequiredArgsConstructor
 @Slf4j
 public class BankController {
@@ -27,7 +27,7 @@ public class BankController {
         if (headers.get("key") == null || !headers.get("key").contains(SECRET_KEY)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Credentials");
         } else {
-            log.info("Bank payment receieved with key: {}", headers.get("key").toString());
+            log.info("Bank payment received with key: {}", headers.get("key").toString());
             return bankService.acceptPayment(amount);
         }
     }
