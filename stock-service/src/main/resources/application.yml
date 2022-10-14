@@ -30,3 +30,4 @@ server:
 
 config:
   min_stock_alert: ${STOCK_SERVICE_MIN_STOCK_ALERT}
+  secret-key: ${SECRET_KEY}
