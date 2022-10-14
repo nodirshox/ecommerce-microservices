@@ -27,6 +27,7 @@ minikube kubectl -- delete -f kubernetes/services/stock-service.yaml
 minikube kubectl -- delete -f kubernetes/services/card-service.yaml
 minikube kubectl -- delete -f kubernetes/services/bank-service.yaml
 minikube kubectl -- delete -f kubernetes/services/postgres-service.yaml
+minikube kubectl -- delete -f kubernetes/ingress.yaml
 
 printLine
 echo "| 3. Deleting config"

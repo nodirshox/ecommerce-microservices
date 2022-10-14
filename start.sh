@@ -33,15 +33,20 @@ minikube kubectl -- apply -f kubernetes/postgres-secret.yaml
 printLine
 echo "| 5. Starting Microservices"
 printLine
+
 minikube kubectl -- apply -f kubernetes/services/postgres-service.yaml
 minikube kubectl -- apply -f kubernetes/services/auth-service.yaml
-minikube kubectl -- apply -f kubernetes/services/catalog-service.yaml
-minikube kubectl -- apply -f kubernetes/services/order-service.yaml
-minikube kubectl -- apply -f kubernetes/services/payment-service.yaml
-minikube kubectl -- apply -f kubernetes/services/shipping-service.yaml
-minikube kubectl -- apply -f kubernetes/services/stock-service.yaml
-minikube kubectl -- apply -f kubernetes/services/card-service.yaml
-minikube kubectl -- apply -f kubernetes/services/bank-service.yaml
+#minikube kubectl -- apply -f kubernetes/services/catalog-service.yaml
+#minikube kubectl -- apply -f kubernetes/services/order-service.yaml
+#minikube kubectl -- apply -f kubernetes/services/payment-service.yaml
+#minikube kubectl -- apply -f kubernetes/services/shipping-service.yaml
+#minikube kubectl -- apply -f kubernetes/services/stock-service.yaml
+#minikube kubectl -- apply -f kubernetes/services/card-service.yaml
+#minikube kubectl -- apply -f kubernetes/services/bank-service.yaml
+
+#minikube addons enable ingress
+#minikube kubectl -- apply -f kubernetes/ingress.yaml
+#minikube ip
 
 printLine
 echo "| 6. Starting Services"
