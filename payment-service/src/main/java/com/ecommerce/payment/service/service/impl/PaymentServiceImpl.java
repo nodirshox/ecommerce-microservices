@@ -11,12 +11,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -48,6 +49,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${config.order-service-port}")
     private Integer ORDER_SERVICE_PORT;
 
+    @Value("${config.secret-key}")
+    private String SECRET_KEY;
+
     private final PaymentRepository paymentRepository;
     private final ModelMapper mapper;
     private final RestTemplate restTemplate;
@@ -66,7 +70,13 @@ public class PaymentServiceImpl implements PaymentService {
 
         // Checking the order
         log.info("Sending order service method");
-        Response addressResponse = restTemplate.getForObject(ORDER_SERVICE + "/api/orders/"+ paymentDTO.getOrderId() +"?prop=address",Response.class);
+        HttpEntity<Void> orderEntity = new HttpEntity<>(getHeader());
+        Response addressResponse = restTemplate.exchange(
+                ORDER_SERVICE + "/api/orders/"+ paymentDTO.getOrderId() +"?prop=address",
+                HttpMethod.GET,
+                orderEntity,
+                Response.class
+        ).getBody();
         log.info("Received response from order service method", addressResponse);
 
         if (!addressResponse.getSuccess()) {
@@ -78,19 +88,21 @@ public class PaymentServiceImpl implements PaymentService {
         mapper.map(addressResponse.getData(),address);
 
         log.info("Sending payment method");
+        HttpEntity<AmountRequestDTO> httpEntity = new HttpEntity<>(amountRequestDTO,getHeader());
         if (payment.getPaymentMethod() == Payment.PaymentMethod.BANK) {
             log.info("Sending payment method to bank service");
-            response = restTemplate.postForObject(BANK_SERVICE + "/api/bank/payments",amountRequestDTO,Response.class);
+            response = restTemplate.postForObject(BANK_SERVICE + "/api/bank/payments",httpEntity,Response.class);
             log.info("Received response from bank service", response);
 
         } else if (payment.getPaymentMethod() == Payment.PaymentMethod.CC) {
             log.info("Sending payment method to credit card service");
-            response = restTemplate.postForObject(CREDIT_CARD_SERVICE + "/api/credit-card/payments",amountRequestDTO,Response.class);
+            response = restTemplate.postForObject(CREDIT_CARD_SERVICE + "/api/credit-card/payments",httpEntity,Response.class);
             log.info("Received response from credit card service", response);
         }
 
         log.info("Sending shipping service method");
-        Response shipmentResponse = restTemplate.postForObject(SHIPMENT_SERVICE + "/api/shipment", address,Response.class);
+        HttpEntity<Address> addressHttpEntity = new HttpEntity<>(address,getHeader());
+        Response shipmentResponse = restTemplate.postForObject(SHIPMENT_SERVICE + "/api/shipment", addressHttpEntity,Response.class);
         log.info("Received response from shipping service method");
 
         assert response != null;
@@ -115,5 +127,12 @@ public class PaymentServiceImpl implements PaymentService {
     public Response getPayment(Long id) {
         Payment payment = paymentRepository.findById(id).orElse(null);
         return new Response(payment,true);
+    }
+    private HttpHeaders getHeader() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.set("key",SECRET_KEY);
+        return headers;
     }
 }

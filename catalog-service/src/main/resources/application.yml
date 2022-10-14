@@ -31,3 +31,4 @@ server:
 config:
   stock-service-host: ${STOCK_SERVICE_HOST}
   stock-service-port: ${STOCK_SERVICE_PORT}
+  secret-key: ${SECRET_KEY}

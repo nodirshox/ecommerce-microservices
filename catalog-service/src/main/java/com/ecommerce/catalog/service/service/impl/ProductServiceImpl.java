@@ -7,11 +7,14 @@ import com.ecommerce.catalog.service.model.Response;
 import com.ecommerce.catalog.service.repository.CatalogRepository;
 import com.ecommerce.catalog.service.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Value("${config.stock-service-port}")
     private Integer STOCK_SERVICE_PORT;
+
+    @Value("${config.secret-key}")
+    private String SECRET_KEY;
 
     private final CatalogRepository catalogRepository;
     private final RestTemplate restTemplate;
@@ -44,7 +50,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product(catalog.getProductName(),catalog.getPrice(),catalog.getVendor(),catalog.getCategory());
         catalogRepository.save(product);
         CreateStockDTO stockDTO = new CreateStockDTO(product.getId());
-        Response response = restTemplate.postForObject(STOCK_SERVICE + "/api/stocks", stockDTO, Response.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.set("key",SECRET_KEY);
+        HttpEntity<CreateStockDTO> httpEntity = new HttpEntity<>(stockDTO,headers);
+        Response response = restTemplate.postForObject(STOCK_SERVICE + "/api/stocks", httpEntity, Response.class);
         assert response != null;
         if (response.getSuccess()) {
             return new Response(product,true);
