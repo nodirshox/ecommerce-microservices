@@ -37,3 +37,4 @@ config:
   shipment-service-port: ${SHIPMENT_SERVICE_PORT}
   order-service-host: ${ORDER_SERVICE_HOST}
   order-service-port: ${ORDER_SERVICE_PORT}
+  secret-key: ${SECRET_KEY}
