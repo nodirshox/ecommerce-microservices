@@ -42,16 +42,24 @@
     ```
 9. Copy IP and use it BASE_URL for request in next steps
 
-10. Checking Login user. Endpoint: [POST] http://BASE_URL/auth/login 
+10. Checking Login user [POST]
+   ```
+   http://BASE_URL/auth/login 
+   ```
    ```
    {
        "email": "user@mail.com",
        "password": "123"
    }
    ```
-11. Check all products. Endpoint: [GET] http://BASE_URL/catalog/products
-
-12. Create order. [POST] http://BASE_URL/order/orders
+11. Check all products [GET] 
+   ```
+   http://BASE_URL/catalog/products
+   ```
+12. Create order [POST] 
+   ```
+   http://BASE_URL/order/orders
+   ```
    ```
    {
        "userId": 1002,
@@ -69,7 +77,10 @@
        "paymentMethod": "CC"
    }
    ```
-13. Make payment. [POST] http://BASE_URL/payment/payments
+13. Make payment [POST] 
+   ```
+   http://BASE_URL/payment/payments
+   ```
    ```
    {
        "orderId": 1001,
