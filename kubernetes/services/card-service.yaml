@@ -20,11 +20,11 @@ spec:
           ports:
             - containerPort: 8006
           env:
-            - name: SECRET_KEY
+            - name: CARD_SERVICE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: header-secret
+                  key: card-service-secret
 ---
 apiVersion: v1
 kind: Service

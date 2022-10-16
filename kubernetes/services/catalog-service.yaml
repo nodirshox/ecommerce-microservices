@@ -52,11 +52,11 @@ spec:
                   key: stock_service_host
             - name: STOCK_SERVICE_PORT
               value: "8005"
-            - name: SECRET_KEY
+            - name: STOCK_SERVICE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: header-secret
+                  key: stock-service-secret
 
 ---
 apiVersion: v1

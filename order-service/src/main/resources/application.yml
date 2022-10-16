@@ -27,4 +27,4 @@ server:
     include-binding-errors: always
 
 config:
-  secret-key: ${SECRET_KEY}
+  secret-key: ${ORDER_SERVICE_SECRET_KEY}

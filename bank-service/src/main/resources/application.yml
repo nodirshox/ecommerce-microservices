@@ -5,4 +5,4 @@ server:
     include-binding-errors: always
 
 config:
-  secret-key: ${SECRET_KEY}
+  secret-key: ${BANK_SERVICE_SECRET_KEY}

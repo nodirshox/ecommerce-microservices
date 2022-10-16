@@ -47,11 +47,11 @@ spec:
                   key: postgres-port
             - name: STOCK_SERVICE_MIN_STOCK_ALERT
               value: "50"
-            - name: SECRET_KEY
+            - name: STOCK_SERVICE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: header-secret
+                  key: stock-service-secret
 ---
 apiVersion: v1
 kind: Service

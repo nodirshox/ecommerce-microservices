@@ -20,11 +20,11 @@ spec:
           ports:
             - containerPort: 8007
           env:
-            - name: SECRET_KEY
+            - name: BANK_SERVICE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: header-secret
+                  key: bank-service-secret
 ---
 apiVersion: v1
 kind: Service

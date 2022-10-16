@@ -20,11 +20,11 @@ spec:
           ports:
             - containerPort: 8004
           env:
-            - name: SECRET_KEY
+            - name: SHIPPING_SERVICE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: header-secret
+                  key: shipping-service-secret
 ---
 apiVersion: v1
 kind: Service
