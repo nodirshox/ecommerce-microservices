@@ -31,12 +31,19 @@ server:
 config:
   bank-service-host: ${BANK_SERVICE_HOST}
   bank-service-port: ${BANK_SERVICE_PORT}
+  bank-service-key: ${BANK_SERVICE_SECRET_KEY}
+
   credit-card-service-host: ${CREDIT_CARD_SERVICE_HOST}
   credit-card-service-port: ${CREDIT_CARD_SERVICE_PORT}
+  credit-card-service-key: ${CARD_SERVICE_SECRET_KEY}
+
   shipment-service-host: ${SHIPMENT_SERVICE_HOST}
   shipment-service-port: ${SHIPMENT_SERVICE_PORT}
+  shipment-service-key: ${SHIPPING_SERVICE_SECRET_KEY}
+
   order-service-host: ${ORDER_SERVICE_HOST}
   order-service-port: ${ORDER_SERVICE_PORT}
+  order-service-key: ${ORDER_SERVICE_SECRET_KEY}
+
   auth-service-host: ${AUTH_SERVICE_HOST}
   auth-service-port: ${AUTH_SERVICE_PORT}
-  secret-key: ${SECRET_KEY}

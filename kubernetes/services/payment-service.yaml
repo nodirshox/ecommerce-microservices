@@ -73,11 +73,26 @@ spec:
                   key: order_service_host
             - name: ORDER_SERVICE_PORT
               value: "8002"
-            - name: SECRET_KEY
+            - name: BANK_SERVICE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: header-secret
+                  key: bank-service-secret
+            - name: CARD_SERVICE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: card-service-secret
+            - name: SHIPPING_SERVICE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: shipping-service-secret
+            - name: ORDER_SERVICE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: order-service-secret
 ---
 apiVersion: v1
 kind: Service

@@ -45,11 +45,11 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: postgres-port
-            - name: SECRET_KEY
+            - name: ORDER_SERVICE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: header-secret
+                  key: order-service-secret
 ---
 apiVersion: v1
 kind: Service
