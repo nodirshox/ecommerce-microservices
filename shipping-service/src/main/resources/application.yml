@@ -9,4 +9,4 @@ server:
     include-binding-errors: always
 
 config:
-  secret-key: ${SECRET_KEY}
+  secret-key: ${SHIPPING_SERVICE_SECRET_KEY}
