@@ -2,6 +2,7 @@ package com.ecommerce.auth.service.controller;
 
 import com.ecommerce.auth.service.model.LoginRequest;
 import com.ecommerce.auth.service.model.Response;
+import com.ecommerce.auth.service.model.TokenRequest;
 import com.ecommerce.auth.service.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,5 +22,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Response response = new Response(userService.login(loginRequest), true);
         return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/validate-token")
+    public Response validateToken(@RequestBody TokenRequest tokenRequest) {
+        return userService.validateToken(tokenRequest);
     }
 }

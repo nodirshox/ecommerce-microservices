@@ -3,6 +3,8 @@ package com.ecommerce.auth.service.service.impl;
 import com.ecommerce.auth.service.entity.User;
 import com.ecommerce.auth.service.model.LoginRequest;
 import com.ecommerce.auth.service.model.LoginResponse;
+import com.ecommerce.auth.service.model.Response;
+import com.ecommerce.auth.service.model.TokenRequest;
 import com.ecommerce.auth.service.repository.UserRepository;
 import com.ecommerce.auth.service.security.JwtHelper;
 import com.ecommerce.auth.service.service.UserService;
@@ -42,5 +44,14 @@ public class UserServiceImpl implements UserService {
         final String accessToken = jwtHelper.generateToken(loginRequest.getEmail());
         var loginResponse = new LoginResponse(accessToken);
         return loginResponse;
+    }
+
+    @Override
+    public Response validateToken(TokenRequest tokenRequest) {
+        boolean isValid = jwtHelper.validateToken(tokenRequest.getToken());
+        if (!isValid) {
+            return new Response(null,false);
+        }
+        return new Response(null,true);
     }
 }
