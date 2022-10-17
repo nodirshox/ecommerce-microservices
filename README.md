@@ -5,6 +5,15 @@
 
 2. Nodirbek Ergashev (614644)
 
+### Design
+
+1. We implemented 8 microservices based on Spring Boot.
+2. All communication between services using HTTP call with secret key. 
+3. Kubernetes and Minikube is used to deploy services.
+4. On kubernetes folder: Secret key, config map, routing and deployments.
+5. Kubernetes Ingress is used to routing.
+6. We did configuration for Kubernetes running 1 instance for each service, because of easier testing. But, it can be updated to any number of instances in kubernetes configuration files.
+
 ### Instruction
 
 1. Make sure you have installed **minikube**:
