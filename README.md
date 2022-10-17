@@ -5,6 +5,10 @@
 
 2. Nodirbek Ergashev (614644)
 
+### Demo
+
+Video: https://youtu.be/OLVJN46bmjc
+
 ### Design
 
 1. We implemented 8 microservices based on Spring Boot.
