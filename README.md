@@ -44,7 +44,7 @@
 
 10. [POST] Checking Login user and save 'ACCESS_TOKEN' temporarily for future requests
    ```
-   http://BASE_URL/auth/login 
+   http://BASE_URL/auth/login
    ```
    ```
    {
