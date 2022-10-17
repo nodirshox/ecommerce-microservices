@@ -10,3 +10,4 @@ data:
   card_service_host: ecommerce-card-service
   shipping_service_host: ecommerce-shipping-service
   order_service_host: ecommerce-order-service
+  auth_service_host: ecommerce-auth-service
