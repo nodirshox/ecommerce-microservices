@@ -42,7 +42,7 @@
     ```
 9. Copy IP and use it BASE_URL for request in next steps
 
-10. Checking Login user [POST]
+10. [POST] Checking Login user and save 'ACCESS_TOKEN' temporarily for future requests
    ```
    http://BASE_URL/auth/login 
    ```
@@ -52,11 +52,11 @@
        "password": "123"
    }
    ```
-11. Check all products [GET] 
+11. [GET] Check all products
    ```
    http://BASE_URL/catalog/products
    ```
-12. Create order [POST] 
+12. [POST] Create order. Add header: 'Authorization': 'ACCESS_TOKEN'
    ```
    http://BASE_URL/order/orders
    ```
@@ -77,7 +77,7 @@
        "paymentMethod": "CC"
    }
    ```
-13. Make payment [POST] 
+13. [POST] Make payment. Add header: 'Authorization': 'ACCESS_TOKEN'
    ```
    http://BASE_URL/payment/payments
    ```
