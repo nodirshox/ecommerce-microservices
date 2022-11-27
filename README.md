@@ -5,6 +5,10 @@
 
 2. Nodirbek Ergashev (614644)
 
+### System Architecture
+
+![Architecture](/assets/project.jpg "Architecture")
+
 ### Demo
 
 Video: https://youtu.be/OLVJN46bmjc
